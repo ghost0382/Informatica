@@ -1,0 +1,102 @@
+SHA-256 (standard FIPS PUB 180-4)
+
+INTRODUZIONE
+Procedimento matematico che trasforma qualsiasi dato digitale
+in un "impronta" fissa di 256 bit, rappresentata da una stringa
+di 64 caratteri esadecimale (hex).
+
+
+
+6 FASI DELL'ALGORITMO
+
+FASE 1: Codifica e conteggio
+	In questa fase, il testo inserito viene convertito in una
+	stringa binaria usando la codifica ASCII/UTF-8.
+
+	Ad esempio:
+
+			"abc" > '\x97\x98\x99'
+
+			L = 3 byte = 24 bit
+
+
+FASE 2: Padding
+	SHA-256 accetta SOLO blocchi di dati da 512 bit (64 byte)
+	Se il blocco non e' id 512 bit, viene attuato un riempi-
+	mento chiamato padding.
+
+
+	I componenti sono:
+	
+		L : il messaggio originale convertito in bit
+		1 : il bit di esprazione (in hex: 0x80)
+		0 : 448 -  (L + 1)
+		l : lunghezza originale
+
+
+			L  + 1 + 000.....   + l(unghezza origniale)
+			24 + 1 + 423 (0x80) + 64
+
+
+FASE 3: Registri e costanti
+	Qui si iniziano a preparare due set di numeri fissi:
+
+		. 8 registri (H0...H7): 32 bit ciascuno.
+			Contengono i primi 32 bit dopo la virgola
+			delle radici quadrate dei primi 8 numeri primi
+
+			(2, 3, 5, 7, 9, 11, 13, 17, 19)
+
+
+		. 64 costanti di round (K0...K63)
+			Contengono la parte frazionaria della radice
+			cubica (^3) dei primi 64 numeri primi (2 - 311)
+
+
+	Questi numeri sono noti come "Nothing up my sleeve numbers"
+	ovvero "Nessun asso nella manica". Derivano da costanti
+	matematiche universali e non da scelte arbitrarie dei progettisti,
+	garantendo cosi che non vi siano nascoste backdoor.
+
+	
+
+FASE 4: Message Schedule
+	Viene ripreso il blocco in fase 2, di lunghezza 512 bit.
+	Diviso quindi in 16 sottoblocchi da 32 bit ciascuno.
+	Questi blocchi sono chiamate "word" (W0...W15).
+
+	Da questi blocchi ne vengono prodotti altri 48 (W16...W64)
+	Come? Vengono riutilizzati W0...W15 e applicate determinate operazioni:
+	
+	W[t] = (W[t-16] + s0 + W[t-7] + s1) mod 2^32
+
+	dove s0 e s1 sono altre funzioni...
+
+
+FASE 5: 64 Round
+	Copia H0...H8 in registri di lavoro a...h.
+	Viene eseguito un ciclo di "triturazione" 64 volte:
+
+	. Funzioni logiche non lineari
+		. Ch  > il bit di e decide se selezionare il bit
+				di f o di g.
+		. Maj > restitiusicre 1 se almeno due dei tre
+				bit di ingresso a, b ,c vale 1
+
+	. Rotazione e XOR
+		. S0 e S1 (diverse dalla fase 4)
+		. XOR
+
+	. Addizione modulo 2^32: si mantengono solo i 32 lsb
+	
+	Per ciascun round del ciclo, i valori scorrono a cascata
+	da un registro all'altro.
+
+
+FASE 6: Output finale
+
+	Alla fine della fase 5 gli 8 registri di lavoro (a...h)
+	vengono sommati (in 2^32) ai valori iniziali dei registri
+	H1...H7.
+	Convertendo gli 8 risultati da 32 bit con 8 cifre hex
+	affiancandoli, otteniamo un hash finale di 64 caratteri.

@@ -1,0 +1,118 @@
+TOPOLOGIE DI RETI
+
+lineare > punto di rotture del cavo coassiale, va giu tutto
+[DATATO]
+
+token ring > (ibm) girano i pacchetti, 1 punto di rottura > lineare, 2 punti di rottura, reti isolate
+[DATATO]
+
+albero > strutturato con thin e thik ethernet, con dorsale e diramazione.
+			Diramatori posizionati ad inizio e fine del think e per ogni ramo. Tanti punti di rottura
+[DATATO]
+
+star > gestito con hub(swith stupido) o switch (managed/unmanaged) centralizzati da cui diramare
+			il segnale (ocio che se va giu lo switch, va tutto in mona)
+			(importante il backup, 2 switch, uno il clone dell'altro, HA high availability)
+[ATTUALE]
+
+maglia > forzatura tentando di mettere insieme i sistemi precedenti.
+			Non ha mai preso piede come tutti sti tipi di minchiate
+[NON ESISTE]
+
+
+
+ETHERNET > LIVELLO 2 SISTEMA ISO/OSI DATA LINK
+Lo standard attuale per gestire le reti.
+I cavi usati sono messi in un patch pannel.
+Il patch cord hanno 2 pezzi: un ingresso per l'interent e uno per i client
+
+Ethernet e' a collisione > n corsie dove info possono viaggiare piu pacchetti.
+Appunto per questo ci sono possibili collisioni > reinvio pacchetto
++ collisioni, + lenta	-> obbiettivo: minor numero di collisioni
+
+
+MAC addresso usato a livello di trasporto ethernet. 
+Switch lavorano a livello MAC > ARP table
+Al riempimento della tabella ARP, quindi bisogna trovare un modo per non
+saturarla. L'unico modo per gestirla e' di svuotarla temporaneamnete
+> altrimenti > spegni, aspetti i condensatori, riaccendi.
+
+
+CAVI
+
+RJ11 > 4 cavetti. primo cavo telefonico (solo i 2 centrali vengono usati)
+RJ12 > 6 cavetti. evoluzione, usato per la fibra ma il rame decade e risente molto di interferenze
+		non possono essere portatri oltre una certa lunghezza (15m e basta)
+		perche i cavi sono dritti
+RJ45 > 8 cavetti. attuale. Cavi arrotolati in questo tipo ma logicamente segnale dritto
+
+Colorazioni: hanno degli standard. Un impianto dev essere di un solo standard 
+
+Come mai i cavi sono arrotolati?
+Perche' i cavi dritti soffrono molto di elettromagnetismo e a livello elettrico.
+Quindi, in qualche modo [approfondire], riusciamo a schermare i cavi dalle
+interferenze.
+
+Questi cavi hanno varie categorie, differenze strutturali e metodi di collegamento
+
+
+
+CAVI TELEFONICI E CAVI ETHERENT da 6 IN SU: 4/5 usati per la fonia (centrali riservati per compatibilita)
+								1236, 7 e 8 
+
+
+CAVO PATCH		: usati per connettersi con uno switch (segnale dritto, poi invertito) 99%
+CAVO CROSSOVER	: per comunicare diretatmente tra server (uso specifico)
+
+
+NOTE: fttc cabinet , ftth home
+
+
+
+CERTIFICAZIONE DI UNA RETE
+> se	 c'e': il problema non e' la rete
+> se non c'e': il problema potrebbe essere la rete
+
+
+
+
+
+
+SETTAGGIO DI UN SERVER:
+> capisco com e' fatto: bios/uefi? bios
+> bios vuol dire legacy > lecagy vuol dire mbr
+
+> entriamo nella gestione del raid per vedere com e' configurato
+> ci sono dei dischi gialli > degradati!
+> cazzo mene
+> tanto devo rifare tutto da zero
+
+> elimino i vistual disk (non sto formattando, sto solo rimuovendo)
+	OCCHIO: modifiche istantanee, non come nei bios/uefi
+
+
+> notiamo che abbiamo due controller di gestione dei dischi. Perche 2?
+		R: Siamo piu veloci con l'accesso
+		R2: anche per sicurezza forse
+
+ 
+
+> un disco e' morto e lo abbiamo disconnesso dopo averlo individuato
+
+> 7 dischi:
+				Disk 0		235GB		VD00	System disk
+				Disk 1		235GB		VD00	System disk
+
+				Disk 2		2.35TB		VD01	Raid 1
+				Disk 3		2.35TB		VD01	Raid 1
+
+				Disk 4				[ DEAD ]
+
+				Disk 5		3TB			VD02	Raid 5
+				Disk 6		3TB			VD02	Raid 5
+				Disk 7		3TB			VD02	Raid 5
+
+
+				Write policy:
+				....Write back		> veloce (cache) ma meno sicuro
+				....Write thorugh	> lento ma sicuro

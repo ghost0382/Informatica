@@ -1,0 +1,19 @@
+Filesystem: il sistema secondo cui vengono organizzati i file.
+Come vengono memorizzati, quali 
+
+Tipi di Filesystem:
+- ext4 (Linux)
+- FAT (File System Table, usato su MS-DOS)
+- exFAT (extended-FAT per memorie piu grandi)
+- NTFS (New Technology File System, innovazione di Windows 3.11 collab Gates x IBM)
+
+
+
+Comandi visti oggi:
+- ls (visualizzazione conteuto directory)
+- cd (spostamento)
+- whoami (ci indica chi siamo, # di solito e' root, utile agli script per sapere chi li esegue)
+- echo (scrive su terminale)
+- date (indica la data)
+- pwd (indica il percorso completo di dove mi trovo)
+- sudo (super user do)
